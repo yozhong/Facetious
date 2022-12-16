@@ -19,12 +19,14 @@ public:
     CaptureThread(QString videoPath, QMutex *lock);
     ~CaptureThread();
     void setRunning(bool run) { running = run; };
+    void takePhoto() { takingPhoto = true; }
 
 protected:
     void run() override;
 
 signals:
     void frameCaptured(cv::Mat *data);
+    void photoTaken(QString name);
 
 private:
     bool running;
@@ -32,6 +34,9 @@ private:
     QString videoPath;
     QMutex *dataLock;
     cv::Mat frame;
+    // take photos
+    bool takingPhoto;
+    void takePhoto(cv::Mat &frame);
 };
 
 #endif // CAPTURE_THREAD_H
